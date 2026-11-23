@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "CanaMastery",
+    "slug": "canamastery",
+    "scheme": "canamastery",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/generated/icon.png",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "bundleIdentifier": "com.canamastery.citizenship",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.canamastery.citizenship",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/generated/adaptive-icon.png",
+        "backgroundColor": "#C22020"
+      },
+      "permissions": [
+        "android.permission.RECEIVE_BOOT_COMPLETED"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-localization",
+      "expo-iap",
+      [
+        "expo-notifications",
+        {
+          "color": "#C22020",
+          "enableBackgroundRemoteNotifications": false
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/generated/splash.png",
+          "imageWidth": 200,
+          "backgroundColor": "#C22020"
+        }
+      ]
+    ]
+  }
+}

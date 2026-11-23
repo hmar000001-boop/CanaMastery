@@ -1,0 +1,41 @@
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+import { QuizRunner } from '../../../src/components/QuizRunner';
+import { useBundle } from '../../../src/content/useBundle';
+import { useChapterFlowText } from '../../../src/i18n/chapterFlow';
+import { assessmentChapterId, nextChapterTarget } from '../../../src/logic/chapterFlow';
+import { assessmentIds } from '../../../src/logic/completion';
+import { useProgress } from '../../../src/store/progress';
+import { usePremium } from '../../../src/store/premium';
+import { useSettings } from '../../../src/store/settings';
+import type { ContentBundle } from '../../../src/types';
+
+export default function QuizScreen() {
+  const bundle = useBundle(); const { kind, id } = useLocalSearchParams<{ kind: string; id: string }>(); const jurisdictionId = useSettings((s) => s.jurisdictionId); const premiumUnlocked = usePremium((s) => s.unlocked); const router = useRouter();
+  const numericId = Number(id);
+  const lesson = kind === 'lesson' ? bundle.lessons.find((l) => l.id === numericId) : undefined;
+  const chapter = kind === 'chapter' ? bundle.chapters.find((c) => c.id === numericId) : undefined;
+  const locked = Boolean((lesson?.access === 'premium' || chapter?.access === 'premium') && !premiumUnlocked);
+  useEffect(() => { if (locked) router.replace('/premium'); }, [locked, router]);
+  if (locked) return null;
+  const regional = chapter?.id === 1010 || Boolean(lesson?.regional);
+  const assessmentKey = regional && jurisdictionId ? `${kind}:${id}:${jurisdictionId}` : `${kind}:${id}`;
+  return <Assessment key={`${bundle.lang}-${assessmentKey}`} bundle={bundle} assessmentKey={assessmentKey} kind={kind} />;
+}
+function Assessment({ bundle, assessmentKey, kind }: { bundle: ContentBundle; assessmentKey: string; kind: string }) {
+  const { t } = useTranslation(); const flowText = useChapterFlowText(); const router = useRouter();
+  const progress = useProgress(); const record = progress.recordQuiz;
+  const onComplete = useCallback((r: { correct: number; total: number }) => {
+    record(assessmentKey, r.correct, r.total, bundle.lang);
+  }, [record, assessmentKey, bundle.lang]);
+  const ids = assessmentIds(bundle, assessmentKey);
+  const chapterId = assessmentChapterId(bundle, assessmentKey);
+  const next = chapterId === null ? null : nextChapterTarget(bundle, progress, chapterId);
+  return <View style={styles.root}>
+    <Stack.Screen options={{ title: kind === 'chapter' ? t('learn.chapterQuiz') : t('learn.lessonQuiz') }} />
+    <QuizRunner questionIds={ids} assessmentKey={assessmentKey} onComplete={onComplete} resultAction={next ? { label: flowText.nextChapter, subject: next.title, onPress: () => router.replace(next.route) } : undefined} />
+  </View>;
+}
+const styles = StyleSheet.create({ root: { flex: 1 } });

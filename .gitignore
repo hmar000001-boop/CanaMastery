@@ -1,0 +1,16 @@
+node_modules/
+.expo/
+.env*
+*.log
+android/
+ios/
+# Do not commit raw/private source corpora.
+data/source/content_en.txt
+data/source/content_fr.txt
+# Production content is intentionally committed in obfuscated form.
+.DS_Store
+
+# Private content authoring inputs.
+data/private-content/
+*.source.json
+*.raw.txt

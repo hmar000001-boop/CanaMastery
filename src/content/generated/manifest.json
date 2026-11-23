@@ -1,0 +1,36 @@
+{
+  "contentVersion": "2026-11-23",
+  "sourceEdition": "Discover Canada: The Rights and Responsibilities of Citizenship",
+  "sourceCheckedOn": "2026-11-23",
+  "sourceUrl": "https://www.canada.ca/en/immigration-refugees-citizenship/services/new-immigrants/discover-canada/read-online.html",
+  "chapters": 11,
+  "lessons": 95,
+  "questions": 1151,
+  "freeQuestions": 223,
+  "premiumQuestions": 928,
+  "regionalQuestions": 150,
+  "exams": 46,
+  "glossary": 67,
+  "freeChapterIds": [
+    1000,
+    1001,
+    1002
+  ],
+  "jurisdictionCounts": {
+    "AB": 26,
+    "BC": 27,
+    "MB": 34,
+    "NB": 27,
+    "NL": 28,
+    "NS": 30,
+    "NT": 30,
+    "NU": 31,
+    "ON": 47,
+    "PE": 24,
+    "QC": 32,
+    "SK": 19,
+    "YT": 35
+  },
+  "obfuscation": "xor-rotating-key-v1",
+  "editorialReview": "pending"
+}

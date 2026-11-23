@@ -1,0 +1,10 @@
+export const APP_NAME = 'CanaMastery';
+export const APP_TAGLINE = 'Canadian Citizenship Test Prep';
+export const EXAM_SIZE = 20;
+export const PASS_MARK = 15;
+export const EXAM_MINUTES = 45;
+export const LESSON_QUIZ_MIN_QUESTIONS = 3;
+export const REVIEW_SESSION_SIZE = 20;
+export const PREMIUM_PRODUCT_ID = 'com.canamastery.premium_lifetime';
+export const CONTENT_VERSION = '2026.11.23';
+export const GUIDE_EDITION = 'Discover Canada: The Rights and Responsibilities of Citizenship';
