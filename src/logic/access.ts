@@ -1,9 +1,18 @@
 import type { ContentBundle, Exam, JurisdictionId, Question } from '../types';
 
-export const FREE_CHAPTER_IDS = new Set([1000, 1001, 1002]);
+export const FREE_CHAPTER_IDS = new Set([17, 21, 26]);
 
 export function isChapterUnlocked(chapterId: number, premiumUnlocked: boolean): boolean {
   return premiumUnlocked || FREE_CHAPTER_IDS.has(chapterId);
+}
+
+export function chapterHasRegionalQuestions(bundle: ContentBundle, chapterId: number): boolean {
+  const chapter = bundle.chapters.find((candidate) => candidate.id === chapterId);
+  if (!chapter) return false;
+  return chapter.lessonIds.some((lessonId) => {
+    const lesson = bundle.lessons.find((candidate) => candidate.id === lessonId);
+    return Boolean(lesson?.questionIds.some((questionId) => bundle.questions[questionId]?.regional === true));
+  });
 }
 
 export function isQuestionForJurisdiction(question: Question, jurisdictionId: JurisdictionId): boolean {

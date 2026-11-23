@@ -25,3 +25,8 @@ Every production lesson should carry its source citation. Every question should 
 ## Publishing gate
 
 Only content that passes automated validation **and** human editorial approval may be promoted to the release bundle.
+
+
+## Rewrite and deduplication
+
+The production generator starts from the supplied CitizenshipExam question corpus, removes exact/near duplicates using a 90% similarity gate, then rewrites the retained question stems independently in English and French. Duplicate source records that collapse to one question retain the lesson associations needed for navigation and practice.

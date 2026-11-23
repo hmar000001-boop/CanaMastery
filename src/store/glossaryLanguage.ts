@@ -5,7 +5,7 @@ import { glossaryLanguage, type GlossaryLanguage } from '../logic/glossaryLangua
 
 interface State { language: GlossaryLanguage; setLanguage: (language: GlossaryLanguage) => void; }
 export const useGlossaryLanguage = create<State>()(persist((set) => ({
-  language: 'ar',
+  language: 'en',
   setLanguage: (language) => set({ language: glossaryLanguage(language) }),
 }), {
   name: 'glossary-language-v1', version: 1, storage: createJSONStorage(() => AsyncStorage),

@@ -24,7 +24,7 @@ The app uses the currently published Government of Canada *Discover Canada* mate
 
 Production content is authored as original explanations/questions and linked to the official source using citation metadata. A citation can identify the official title, chapter/section, URL, and content verification date.
 
-The current release candidate includes content migrated from the supplied repositories. This does **not** constitute a legal clearance of every inherited question or asset. Before public commercial release, the editorial/legal review must confirm that every shipped question, illustration, icon, and other third-party asset has a usable license or is original to CanaMastery.
+The current release candidate is based on the supplied `CitizenshipExam` question corpus. Questions are deduplicated at a 90% text-similarity threshold, then independently rewritten in English and French. The runtime bundle contains only the rewritten set. This does **not** constitute a legal clearance of every inherited question or asset. Before public commercial release, the editorial/legal review must confirm that every shipped question, illustration, icon, and other third-party asset has a usable license or is original to CanaMastery.
 
 The guide can contain information that is no longer current in the real world. For test-preparation content, the guide edition is treated as the source of truth unless the guide itself is updated.
 
@@ -32,15 +32,15 @@ The guide can contain information that is no longer current in the real world. F
 
 Generated production bundle (2026-11-23):
 
-- 11 chapters
-- 95 lessons
-- 1,151 questions
-- 46 exams (1 free sample + premium exams)
-- 67 English glossary terms
+- 14 chapters
+- 85 lessons
+- 696 unique rewritten questions
+- 45 exams (1 free exam + premium exams)
+- 67 glossary terms in each language bundle
 - 13 selectable jurisdictions (10 provinces + 3 territories)
-- 150 regional questions tagged to jurisdictions
+- 52 regional questions tagged to jurisdictions
 - 3 free chapters
-- 223 free questions / 928 premium questions
+- 148 free questions / 548 premium questions
 
 The French glossary currently contains 66 terms; content parity must be reviewed during final editorial QA.
 

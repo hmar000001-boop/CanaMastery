@@ -7,6 +7,7 @@ import { useBundle } from '../../../src/content/useBundle';
 import { useChapterFlowText } from '../../../src/i18n/chapterFlow';
 import { assessmentChapterId, nextChapterTarget } from '../../../src/logic/chapterFlow';
 import { assessmentIds } from '../../../src/logic/completion';
+import { chapterHasRegionalQuestions } from '../../../src/logic/access';
 import { useProgress } from '../../../src/store/progress';
 import { usePremium } from '../../../src/store/premium';
 import { useSettings } from '../../../src/store/settings';
@@ -20,7 +21,7 @@ export default function QuizScreen() {
   const locked = Boolean((lesson?.access === 'premium' || chapter?.access === 'premium') && !premiumUnlocked);
   useEffect(() => { if (locked) router.replace('/premium'); }, [locked, router]);
   if (locked) return null;
-  const regional = chapter?.id === 1010 || Boolean(lesson?.regional);
+  const regional = Boolean(lesson?.regional) || Boolean(chapter && chapterHasRegionalQuestions(bundle, chapter.id));
   const assessmentKey = regional && jurisdictionId ? `${kind}:${id}:${jurisdictionId}` : `${kind}:${id}`;
   return <Assessment key={`${bundle.lang}-${assessmentKey}`} bundle={bundle} assessmentKey={assessmentKey} kind={kind} />;
 }

@@ -11,6 +11,7 @@ import { useChapterFlowText } from '../../../src/i18n/chapterFlow';
 import { useCompletionText } from '../../../src/i18n/completion';
 import { courseCompleted, nextChapterTarget } from '../../../src/logic/chapterFlow';
 import { assessmentIds, chapterStatus, lessonStatus } from '../../../src/logic/completion';
+import { chapterHasRegionalQuestions } from '../../../src/logic/access';
 import { learningPassPercent } from '../../../src/logic/learningLevels';
 import { useProgress } from '../../../src/store/progress';
 import { usePremium } from '../../../src/store/premium';
@@ -25,7 +26,7 @@ export default function ChapterScreen() {
   const { chapterId } = useLocalSearchParams<{ chapterId: string }>(); const bundle = useBundle(); const progress = useProgress();
   const chapter = bundle.chapters.find((c) => c.id === Number(chapterId)); if (!chapter) return null;
   if (chapter.access === 'premium' && !premiumUnlocked) return <View style={[styles.root, { backgroundColor: theme.colors.background }]}><Stack.Screen options={{ title: chapter.title }} /><View style={{ padding: 16 }}><PaywallCard /></View></View>;
-  const key = chapter.id === 1010 ? `chapter:${chapter.id}:${jurisdictionId}` : `chapter:${chapter.id}`; const count = chapter.lessonIds.length;
+  const key = chapterHasRegionalQuestions(bundle, chapter.id) ? `chapter:${chapter.id}:${jurisdictionId}` : `chapter:${chapter.id}`; const count = chapter.lessonIds.length;
   const done = chapter.lessonIds.filter((id) => lessonStatus(progress, id) === 'completed').length;
   const nextId = chapter.lessonIds.find((id) => lessonStatus(progress, id) !== 'completed');
   const status = chapterStatus(progress, chapter); const quizIds = assessmentIds(bundle, key);

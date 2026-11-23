@@ -14,3 +14,6 @@ data/source/content_fr.txt
 data/private-content/
 *.source.json
 *.raw.txt
+
+# Private authoring/build workspace; never ship to the repository.
+build/

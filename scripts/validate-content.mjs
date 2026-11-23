@@ -58,9 +58,25 @@ if (en.exams.filter((e) => e.access === 'free').length !== 1) throw new Error('T
 if (en.exams.some((e) => !Array.isArray(e.questionIds) || e.questionIds.length !== 20)) throw new Error('Every mock exam must contain exactly 20 questions.');
 if (en.exams.some((e) => new Set(e.questionIds).size !== 20)) throw new Error('Mock exams cannot contain duplicate question ids.');
 if (manifest.editorialReview !== 'pending') throw new Error('Editorial review status must remain pending until human QA is complete.');
+if (!Number.isInteger(manifest.sourceQuestionCount) || manifest.sourceQuestionCount < manifest.questions) throw new Error('Invalid sourceQuestionCount.');
+if (!Number.isInteger(manifest.duplicatesRemoved) || manifest.duplicatesRemoved < 0) throw new Error('Invalid duplicatesRemoved.');
+if (Number(manifest.enRewriteSimilarityMax) >= 0.9 || Number(manifest.frRewriteSimilarityMax) >= 0.9) throw new Error('At least one rewritten question reaches the 90% similarity threshold.');
+if (Number(manifest.enRewriteSimilarityAbove90) !== 0 || Number(manifest.frRewriteSimilarityAbove90) !== 0) throw new Error('The rewrite audit reports similarity at or above 90%.');
 
 const jurisdictionCounts = Object.fromEntries(requiredJurisdictions.map((id) => [id, 0]));
+const questionTexts = new Set();
 for (const q of allQuestions) {
+  const textKey = String(q.text ?? '').replace(/\s+/g, ' ').trim().toLowerCase();
+  if (questionTexts.has(textKey)) throw new Error(`Duplicate runtime question text found for ${q.id}.`);
+  questionTexts.add(textKey);
+  if (/Complete this study statement|Complétez cet énoncé d’étude|source question|key fact being tested/i.test(String(q.text ?? ''))) throw new Error(`Generic rewrite fallback found in question ${q.id}.`);
+  if (q.type === 'tf') {
+    const expected = q.options?.length === 2;
+    const text = (q.options ?? []).map((x) => String(x).trim().toLowerCase()).sort().join('|');
+    const isTf = text === 'false|true' || text === 'faux|vrai';
+    if (!expected || !isTf) throw new Error(`Question ${q.id} is tagged true/false without true/false answer choices.`);
+  }
+  if (!Array.isArray(q.options) || q.options.length < 2 || !Number.isInteger(q.correctIndex) || q.correctIndex < 0 || q.correctIndex >= q.options.length) throw new Error(`Invalid answer schema for question ${q.id}.`);
   if (q.source?.excerpt || q.source?.quote || q.sourceExcerpt) throw new Error(`Raw source excerpt found in question ${q.id}.`);
   if (!q.source?.url || !q.source?.title || !q.source?.checkedOn) throw new Error(`Missing detailed citation metadata for question ${q.id}.`);
   if (q.regional) {

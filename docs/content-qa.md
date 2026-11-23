@@ -10,16 +10,23 @@ The official test-format page is used for format rules such as 20 questions, 45 
 
 Generated on 2026-11-23:
 
-- 11 chapters
-- 95 lessons
-- 1,151 questions
-- 46 exams
+- 14 chapters
+- 85 lessons
+- 696 unique rewritten questions
+- 45 exams
 - 67 English glossary terms
-- 66 French glossary terms
-- 223 free questions
-- 928 premium questions
-- 150 regional questions
+- 67 French glossary terms
+- 148 free questions
+- 548 premium questions
+- 52 regional questions
 - 13 province/territory filters
+
+
+## Rewrite and deduplication gate
+
+The source corpus contains 1,332 question records. The build removes exact and near-duplicate questions at the configured 90% similarity threshold, then rewrites the retained questions independently in English and French. The current build removes 636 pre-rewrite duplicates and a further 6 duplicates detected after bilingual rewriting, producing 696 unique runtime questions.
+
+The build records maximum question-to-source similarity and fails the content pipeline if a rewritten question reaches 90% similarity. No original question text is stored in the runtime bundle.
 
 ## Regional policy
 
@@ -45,7 +52,7 @@ Questions sourced from the supplied legacy repositories require provenance revie
 
 ## Current content status
 
-The current bundle is a migration/rebuild candidate. Automated transformations and structural checks have been performed, but this is **not equivalent to a human editorial review of all 1,151 questions**.
+The current bundle is a production candidate. All source questions are processed through the rewrite/deduplication pipeline; automated checks confirm bilingual ID parity, question uniqueness, rewrite similarity below 90%, citation metadata, access flags, jurisdiction filtering, and exam shape. This is **not equivalent to human editorial/legal approval** of all 696 final questions.
 
 Before store publication, the editorial gate must inspect every question, especially:
 
