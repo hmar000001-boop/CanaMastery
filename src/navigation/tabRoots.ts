@@ -3,7 +3,7 @@ export const TAB_ROOTS = { learn: '/(tabs)/learn', review: '/(tabs)/review' } as
 export type RootHref = typeof TAB_ROOTS[RootTab];
 
 export interface TabSnapshot {
-  routes: ReadonlyArray<{ name: string; state?: { key?: string } }>;
+  routes: readonly { name: string; state?: { key?: string } }[];
 }
 export interface TabRootResetAction {
   type: 'RESET';

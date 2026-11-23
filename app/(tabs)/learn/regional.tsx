@@ -1,7 +1,7 @@
 import { Stack, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import { Button, Text, useTheme } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import { CitationCard } from '../../../src/components/CitationCard';
 import { Panel } from '../../../src/components/Panel';
 import { PaywallCard } from '../../../src/components/PaywallCard';

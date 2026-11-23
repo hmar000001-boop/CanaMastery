@@ -1,5 +1,5 @@
 import { getLocales } from 'expo-localization';
-import i18n from 'i18next';
+import * as i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import type { Lang } from '../types';
 import { en } from './en'; import { examEn, examFr } from './exam'; import { focusEn, focusFr } from './focus'; import { fr } from './fr'; import { glossaryEn, glossaryFr } from './glossary'; import { homeEn, homeFr } from './home'; import { learnEn, learnFr } from './learn'; import { lessonEn, lessonFr } from './lesson'; import { moreEn, moreFr } from './more'; import { remindersEn, remindersFr } from './reminders'; import { screensEn, screensFr } from './screens'; import { settingsUxEn, settingsUxFr } from './settingsUx'; import { uiEn, uiFr } from './ui'; import { commercialEn, commercialFr } from './commercial';
