@@ -11,6 +11,8 @@ export const en = {
     title: `Welcome`,
     subtitle: `Prepare for the Canadian citizenship test, fully offline.`,
     language: `Language`,
+    languageFrench: `French`,
+    languageEnglish: `English`,
     examDate: `Test date (optional)`,
     examDateHint: `Format: YYYY-MM-DD`,
     dateInvalid: `Enter a valid date as YYYY-MM-DD.`,
@@ -35,6 +37,8 @@ export const en = {
   settings: {
     title: `Settings`,
     language: `Language`,
+    languageFrench: `French`,
+    languageEnglish: `English`,
     examDate: `Test date (YYYY-MM-DD)`,
     dailyGoal: `Daily study goal`,
     reduceMotion: `Reduce animations`,
@@ -44,5 +48,9 @@ export const en = {
     privacy: `Privacy`,
     privacyBody: `No account, no ads, no analytics. Everything stays on this device.`,
     version: `Version`,
+  },
+  error: {
+    title: `Something went wrong`,
+    retry: `Try again`,
   },
 };

@@ -25,11 +25,13 @@ export const commercialEn = {
     noPurchase: 'No previous purchase was found on this store account.',
     unavailable: 'The store is not available right now. You can keep using the free content offline.',
     purchaseNote: 'One-time purchase. Store billing is handled by Google Play on Android and by the App Store on iOS.',
+    featureCourse: 'Full course and lessons',
+    featurePractice: 'Complete practice library',
+    featureReview: 'Full review workflow',
+    featureOffline: 'Works offline after purchase',
   },
   citation: {
-    source: 'Official source',
-    checked: 'Checked {{date}}',
-    open: 'Open official source',
+    hint: 'Official guide section: {{section}}.',
   },
   content: {
     originality: 'Original educational summary; not a reproduction of the study guide.',
@@ -66,11 +68,13 @@ export const commercialFr: typeof commercialEn = {
     noPurchase: 'Aucun achat précédent n’a été trouvé pour ce compte du magasin.',
     unavailable: 'Le magasin n’est pas disponible actuellement. Le contenu gratuit reste utilisable hors ligne.',
     purchaseNote: 'Achat unique. La facturation est gérée par Google Play sur Android et par l’App Store sur iOS.',
+    featureCourse: 'Cours complet et toutes les leçons',
+    featurePractice: 'Bibliothèque complète de questions',
+    featureReview: 'Parcours complet de révision',
+    featureOffline: 'Fonctionne hors ligne après l’achat',
   },
   citation: {
-    source: 'Source officielle',
-    checked: 'Vérifiée le {{date}}',
-    open: 'Ouvrir la source officielle',
+    hint: 'Section du guide officiel : {{section}}.'
   },
   content: {
     originality: 'Résumé pédagogique original; ce texte ne reproduit pas le guide d’étude.',

@@ -1081,12 +1081,15 @@ function main() {
     const lessonId = rep.lessonId == null ? null : Number(rep.lessonId);
     const chapterId = rep.chapterId == null ? null : Number(rep.chapterId);
     const lesson = en.lessons.find((x) => Number(x.id) === lessonId);
+    const frLesson = fr.lessons.find((x) => Number(x.id) === lessonId);
     const chapter = en.chapters.find((x) => x.id === chapterId);
+    const frChapter = fr.chapters.find((x) => Number(x.id) === chapterId);
     const reg = regionalIds(rep, lesson);
-    const source = { guideTitle: GUIDE_TITLE, title: lesson ? `${chapter?.title ?? 'Discover Canada'} — ${lesson.title}` : GUIDE_TITLE, url: GUIDE_URL, checkedOn: CHECKED_ON };
-    const common = { id: n + 1, conceptId: `canamastery-${n + 1}`, type, correctIndex: enOrdered.correctIndex, origin: lessonId != null ? 'lesson' : 'exam', lessonId, chapterId, inferred: lessonId == null, access: FREE_CHAPTER_IDS.includes(chapterId) ? 'free' : 'premium', regional: reg.length === 1, jurisdictionIds: reg.length === 1 ? reg : undefined, source };
-    const enQ = { ...common, text: enText, options: enOrdered.options, explanation: isTf ? `The study material marks this statement as ${enOrdered.correctIndex === 0 ? 'accurate' : 'inaccurate'}.` : `Key fact to remember: ${enOrdered.options[enOrdered.correctIndex] ?? ''}.` };
-    const frQ = { ...common, text: frText, options: frOrdered.options, correctIndex: frOrdered.correctIndex, explanation: isTf ? `Le matériel d’étude considère cette affirmation comme ${frOrdered.correctIndex === 0 ? 'exacte' : 'inexacte'}.` : `Fait à retenir : ${frOrdered.options[frOrdered.correctIndex] ?? ''}.`, source };
+    const sourceEn = { guideTitle: GUIDE_TITLE, title: lesson ? `${chapter?.title ?? 'Discover Canada'} — ${lesson.title}` : GUIDE_TITLE, url: GUIDE_URL, checkedOn: CHECKED_ON };
+    const sourceFr = { guideTitle: GUIDE_TITLE, title: frLesson ? `${frChapter?.title ?? 'Découvrir le Canada'} — ${frLesson.title}` : GUIDE_TITLE, url: GUIDE_URL, checkedOn: CHECKED_ON };
+    const common = { id: n + 1, conceptId: `canamastery-${n + 1}`, type, correctIndex: enOrdered.correctIndex, origin: lessonId != null ? 'lesson' : 'exam', lessonId, chapterId, inferred: lessonId == null, access: FREE_CHAPTER_IDS.includes(chapterId) ? 'free' : 'premium', regional: reg.length === 1, jurisdictionIds: reg.length === 1 ? reg : undefined };
+    const enQ = { ...common, text: enText, options: enOrdered.options, explanation: isTf ? `The study material marks this statement as ${enOrdered.correctIndex === 0 ? 'accurate' : 'inaccurate'}.` : `Key fact to remember: ${enOrdered.options[enOrdered.correctIndex] ?? ''}.`, source: sourceEn };
+    const frQ = { ...common, text: frText, options: frOrdered.options, correctIndex: frOrdered.correctIndex, explanation: isTf ? `Le matériel d’étude considère cette affirmation comme ${frOrdered.correctIndex === 0 ? 'exacte' : 'inexacte'}.` : `Fait à retenir : ${frOrdered.options[frOrdered.correctIndex] ?? ''}.`, source: sourceFr };
     rawRewritten.push({ group: groups[n], en: enQ, fr: frQ, lessonId, chapterId });
   }
   const rewrittenDedupe = mergeRewrittenRows(rawRewritten);
@@ -1172,8 +1175,9 @@ function main() {
   });
 
   const frExams = exams.map((e) => ({ ...e, title: fr.tests?.find((t) => Number(t.id) === e.id)?.title ?? e.title }));
-  const glossary = (en.glossary ?? []).map((g) => ({ id: Number(g.id), term: g.word, definition: g.definition }));
-  const build = (lang, questions, lessonRows, chapterRows, examRows) => ({
+  const glossaryEn = (en.glossary ?? []).map((g) => ({ id: Number(g.id), term: String(g.word ?? g.term ?? '').trim(), definition: String(g.definition ?? '').trim() })).filter((g) => g.term && g.definition);
+  const glossaryFr = (fr.glossary ?? []).map((g) => ({ id: Number(g.id), term: String(g.word ?? g.term ?? '').trim(), definition: String(g.definition ?? '').trim() })).filter((g) => g.term && g.definition);
+  const build = (lang, questions, lessonRows, chapterRows, examRows, glossary) => ({
     lang,
     sample: false,
     contentVersion: CONTENT_VERSION,
@@ -1190,8 +1194,8 @@ function main() {
     exams: examRows,
     glossary,
   });
-  const outEn = build('en', enQuestionsOut, lessons, chapters, exams);
-  const outFr = build('fr', frQuestionsOut, frLessons, chapters.map((c) => ({ ...c, title: frChapterById.get(c.id)?.title ?? c.title, source: { ...c.source, title: frChapterById.get(c.id)?.title ?? c.title } })), frExams);
+  const outEn = build('en', enQuestionsOut, lessons, chapters, exams, glossaryEn);
+  const outFr = build('fr', frQuestionsOut, frLessons, chapters.map((c) => ({ ...c, title: frChapterById.get(c.id)?.title ?? c.title, source: { ...c.source, title: frChapterById.get(c.id)?.title ?? c.title } })), frExams, glossaryFr);
 
   fs.rmSync(OUT, { recursive: true, force: true });
   fs.mkdirSync(OUT, { recursive: true });

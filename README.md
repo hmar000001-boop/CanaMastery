@@ -65,6 +65,7 @@ The app uses a non-consumable/lifetime-style one-time entitlement. There is no c
 ```bash
 npm install
 npm run validate:content
+npm run validate:i18n
 npm run typecheck
 npm run lint
 npm test

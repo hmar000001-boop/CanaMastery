@@ -20,7 +20,7 @@ export default function Onboarding() {
     <ScrollView contentContainerStyle={styles.content}>
       <Text variant='headlineMedium'>{t('onboarding.title')}</Text><Text variant='bodyLarge'>{t('onboarding.subtitle')}</Text>
       <Text variant='titleMedium'>{t('onboarding.language')}</Text>
-      <View style={styles.row}><Button mode={lang === 'fr' ? 'contained' : 'outlined'} onPress={() => pickLang('fr')}>Français</Button><Button mode={lang === 'en' ? 'contained' : 'outlined'} onPress={() => pickLang('en')}>English</Button></View>
+      <View style={styles.row}><Button mode={lang === 'fr' ? 'contained' : 'outlined'} onPress={() => pickLang('fr')}>{t('onboarding.languageFrench')}</Button><Button mode={lang === 'en' ? 'contained' : 'outlined'} onPress={() => pickLang('en')}>{t('onboarding.languageEnglish')}</Button></View>
       <Text variant='titleMedium'>{t('onboarding.jurisdiction')}</Text>
       <Text variant='bodySmall' style={{ color: theme.colors.onSurfaceVariant }}>{t('onboarding.jurisdictionHint')}</Text>
       <View style={styles.grid}>{JURISDICTIONS.map((item) => { const selected = jurisdictionId === item.id; const name = lang === 'fr' ? item.nameFr : item.nameEn; return <Button key={item.id} mode={selected ? 'contained' : 'outlined'} onPress={() => setJurisdictionId(item.id)} style={styles.jurisdiction}>{name}</Button>; })}</View>

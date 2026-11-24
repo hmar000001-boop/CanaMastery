@@ -25,4 +25,4 @@ This archive is a release-candidate source tree for manual upload to the CanaMas
 - Real Google Play Billing purchase/restore test.
 - Signed Android production AAB/Play Console release configuration.
 - Final privacy-policy URL, store metadata, screenshots, and regulatory declarations.
-- CI run must pass dependency install, typecheck, lint, tests, and Android APK/AAB build after the manual GitHub upload.
+- CI run must pass dependency install, content validation, i18n validation, typecheck, lint, tests, and Android APK/AAB build after the manual GitHub upload.

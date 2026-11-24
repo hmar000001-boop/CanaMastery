@@ -1,11 +1,18 @@
 import type { GlossaryTerm } from '../types';
 
-const fold = (s: string) => s.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().replace(/[’‘]/g, "'");
-export const normalizeSearch = (s: string): string => fold(s).replace(/\s+/g, ' ').trim();
+const fold = (value: unknown): string => String(value ?? '')
+  .normalize('NFD')
+  .replace(/\p{M}/gu, '')
+  .toLowerCase()
+  .replace(/[’‘]/g, "'");
+
+export const normalizeSearch = (value: unknown): string => fold(value).replace(/\s+/g, ' ').trim();
 
 export function searchGlossary(terms: GlossaryTerm[], query: string, lang: string): GlossaryTerm[] {
   const q = normalizeSearch(query);
-  return terms.filter((t) => !q || normalizeSearch(t.term).includes(q) || normalizeSearch(t.definition).includes(q))
+  return terms
+    .filter((term) => term && typeof term.term === 'string' && typeof term.definition === 'string')
+    .filter((term) => !q || normalizeSearch(term.term).includes(q) || normalizeSearch(term.definition).includes(q))
     .sort((a, b) => a.term.localeCompare(b.term, lang, { sensitivity: 'base' }));
 }
 
@@ -15,6 +22,7 @@ export type GlossaryMatcher = (text: string) => TermMatch[];
 export function makeGlossaryMatcher(terms: GlossaryTerm[]): GlossaryMatcher {
   const byName = new Map<string, GlossaryTerm>();
   for (const term of terms) {
+    if (!term || typeof term.term !== 'string') continue;
     const name = normalizeSearch(term.term);
     if (name && !byName.has(name)) byName.set(name, term);
   }
@@ -24,11 +32,12 @@ export function makeGlossaryMatcher(terms: GlossaryTerm[]): GlossaryMatcher {
   if (!names.length) return () => [];
   const pattern = '(^|[^\\p{L}\\p{N}_])(' + names.map(escape).join('|') + ')(?![\\p{L}\\p{N}_])';
   return (text) => {
+    const safeText = String(text ?? '');
     let normalized = '';
     let offset = 0;
     const starts: number[] = [];
     const ends: number[] = [];
-    for (const char of text) {
+    for (const char of safeText) {
       const part = fold(char);
       for (let i = 0; i < part.length; i += 1) { starts.push(offset); ends.push(offset + char.length); }
       if (!part.length && ends.length) ends[ends.length - 1] = offset + char.length;
@@ -41,7 +50,7 @@ export function makeGlossaryMatcher(terms: GlossaryTerm[]): GlossaryMatcher {
       const start = (match.index ?? 0) + match[1].length;
       const end = start + match[2].length;
       const term = byName.get(normalizeSearch(match[2]));
-      if (term) out.push({ start: starts[start], end: ends[end - 1], term });
+      if (term && starts[start] !== undefined && ends[end - 1] !== undefined) out.push({ start: starts[start], end: ends[end - 1], term });
     }
     return out;
   };
@@ -50,9 +59,10 @@ export function makeGlossaryMatcher(terms: GlossaryTerm[]): GlossaryMatcher {
 export interface RichSegment { text: string; bold: boolean; term?: GlossaryTerm; }
 
 export function richSegments(text: string, matcher?: GlossaryMatcher): RichSegment[] {
+  const source = String(text ?? '');
   let plain = '';
   const bold: { start: number; end: number }[] = [];
-  text.split('**').forEach((part, i) => {
+  source.split('**').forEach((part, i) => {
     const start = plain.length;
     plain += part;
     if (i % 2 === 1) bold.push({ start, end: plain.length });

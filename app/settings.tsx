@@ -47,7 +47,7 @@ export default function SettingsScreen() {
     <Stack.Screen options={{ title: detail ? titles[detail] : t('settings.title'), headerLeft: detail ? () => <Button compact textColor={theme.colors.onPrimary} onPress={back}>{text.back}</Button> : undefined, headerRight: () => <Button compact textColor={theme.colors.onPrimary} onPress={() => router.back()}>{t('settingsUx.close')}</Button> }} />
     {detail === null ? <>
       <SettingsSection title={text.preferences}>
-        {row('language', current === 'fr' ? 'Français' : 'English')}
+        {row('language', current === 'fr' ? t('settings.languageFrench') : t('settings.languageEnglish'))}
         {row('jurisdiction', s.jurisdictionId ?? '—')}
         {row('quiz', `${quizText[s.quizLevel]} · ${learningPassPercent(s.quizLevel)} %`)}
         {row('appearance', text[s.themeMode])}
@@ -60,7 +60,7 @@ export default function SettingsScreen() {
     </> : null}
     {detail === 'quiz' ? <LearningLevelSettings /> : null}
     {detail === 'jurisdiction' ? <Panel><Text variant='bodySmall' style={{ color: theme.colors.onSurfaceVariant }}>{t('onboarding.jurisdictionHint')}</Text><View style={styles.buttons}>{JURISDICTIONS.map((j) => <Button key={j.id} mode={s.jurisdictionId === j.id ? 'contained' : 'outlined'} onPress={() => s.setJurisdictionId(j.id)}>{current === 'fr' ? j.nameFr : j.nameEn}</Button>)}</View></Panel> : null}
-    {detail === 'language' ? <Panel><View style={styles.buttons}><Button mode={current === 'fr' ? 'contained' : 'outlined'} accessibilityState={{ selected: current === 'fr' }} onPress={() => s.setLang('fr')}>Français</Button><Button mode={current === 'en' ? 'contained' : 'outlined'} accessibilityState={{ selected: current === 'en' }} onPress={() => s.setLang('en')}>English</Button></View></Panel> : null}
+    {detail === 'language' ? <Panel><View style={styles.buttons}><Button mode={current === 'fr' ? 'contained' : 'outlined'} accessibilityState={{ selected: current === 'fr' }} onPress={() => s.setLang('fr')}>{t('settings.languageFrench')}</Button><Button mode={current === 'en' ? 'contained' : 'outlined'} accessibilityState={{ selected: current === 'en' }} onPress={() => s.setLang('en')}>{t('settings.languageEnglish')}</Button></View></Panel> : null}
     {detail === 'appearance' ? <Panel>{(['system', 'light', 'dark'] as const).map((mode) => <Button key={mode} mode={s.themeMode === mode ? 'contained' : 'outlined'} accessibilityState={{ selected: s.themeMode === mode }} onPress={() => { s.setThemeMode(mode); void feedbackHaptic('toggle'); }}>{text[mode]}</Button>)}</Panel> : null}
     {detail === 'text' ? <Panel><View style={styles.between}><Text>16</Text><Text variant='headlineSmall'>{size}</Text><Text>26</Text></View><Slider minimumValue={16 / 17} maximumValue={26 / 17} step={1 / 17} value={s.textScale} onValueChange={s.setTextScale} minimumTrackTintColor={theme.colors.primary} maximumTrackTintColor={theme.colors.surfaceVariant} thumbTintColor={theme.colors.primary} accessibilityLabel={t('settingsUx.textSize')} /><Text style={{ fontSize: size, lineHeight: size * 1.5 }}>{t('settingsUx.preview')}</Text></Panel> : null}
     {detail === 'haptics' ? <Panel>{toggle(t('settingsUx.haptics'), s.haptics, (value) => { s.setHaptics(value); if (value) void feedbackHaptic('toggle'); })}</Panel> : null}

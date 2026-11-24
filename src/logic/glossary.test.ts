@@ -48,6 +48,12 @@ describe('lesson term matching', () => {
     expect(parts.find((p) => p.text === 'common')?.bold).toBe(true);
     expect(parts.find((p) => p.text === ' law')?.bold).toBe(false);
   });
+  test('ignores malformed glossary entries instead of crashing during lesson rendering', () => {
+    const malformed = [{ id: 99, term: undefined, definition: 'ignored' } as unknown as GlossaryTerm];
+    expect(makeGlossaryMatcher(malformed)('Parlement')).toEqual([]);
+    expect(searchGlossary(malformed, 'anything', 'en')).toEqual([]);
+    expect(normalizeSearch(undefined)).toBe('');
+  });
   test('supports plain rich text and an empty glossary', () => {
     expect(richSegments('One **two**').map((p) => [p.text, p.bold])).toEqual([['One ', false], ['two', true]]);
     expect(makeGlossaryMatcher([])('Parlement')).toEqual([]);

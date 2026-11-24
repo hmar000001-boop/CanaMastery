@@ -16,10 +16,10 @@ import { darkTheme, headerOptions, lightTheme } from '../src/theme';
 
 export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
   return <ScrollView style={{ backgroundColor: '#FFFFFF' }} contentContainerStyle={{ padding: 24, paddingTop: 64, gap: 12 }}>
-    <Text style={{ fontSize: 20, fontWeight: '700', color: '#000000' }}>Something went wrong</Text>
+    <Text style={{ fontSize: 20, fontWeight: '700', color: '#000000' }}>{i18n.t('error.title')}</Text>
     <Text selectable style={{ color: '#000000' }}>{error.message}</Text>
     <Text selectable style={{ fontSize: 11, color: '#444444' }}>{error.stack ?? ''}</Text>
-    <Pressable accessibilityRole='button' onPress={retry}><Text style={{ fontSize: 16, color: '#C22020' }}>Try again</Text></Pressable>
+    <Pressable accessibilityRole='button' accessibilityLabel={i18n.t('error.retry')} onPress={retry}><Text style={{ fontSize: 16, color: '#C22020' }}>{i18n.t('error.retry')}</Text></Pressable>
   </ScrollView>;
 }
 export default function RootLayout() {

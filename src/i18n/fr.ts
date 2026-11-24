@@ -13,6 +13,8 @@ export const fr: typeof en = {
     title: `Bienvenue`,
     subtitle: `Préparez l'examen de citoyenneté canadienne, entièrement hors ligne.`,
     language: `Langue`,
+    languageFrench: `Français`,
+    languageEnglish: `Anglais`,
     examDate: `Date de l'examen (facultatif)`,
     examDateHint: `Format : AAAA-MM-JJ`,
     dateInvalid: `Entrez une date valide au format AAAA-MM-JJ.`,
@@ -37,6 +39,8 @@ export const fr: typeof en = {
   settings: {
     title: `Réglages`,
     language: `Langue`,
+    languageFrench: `Français`,
+    languageEnglish: `Anglais`,
     examDate: `Date de l'examen (AAAA-MM-JJ)`,
     dailyGoal: `Objectif d'étude quotidien`,
     reduceMotion: `Réduire les animations`,
@@ -46,5 +50,9 @@ export const fr: typeof en = {
     privacy: `Confidentialité`,
     privacyBody: `Aucun compte, aucune publicité, aucune analyse. Tout reste sur cet appareil.`,
     version: `Version`,
+  },
+  error: {
+    title: `Une erreur s’est produite`,
+    retry: `Réessayer`,
   },
 };

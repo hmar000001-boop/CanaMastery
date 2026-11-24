@@ -29,6 +29,9 @@ jobs:
       - name: Validate production content
         run: npm run validate:content
 
+      - name: Validate translations
+        run: npm run validate:i18n
+
       - name: Typecheck
         run: npm run typecheck
 
