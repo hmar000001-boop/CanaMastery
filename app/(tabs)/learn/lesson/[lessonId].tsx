@@ -32,7 +32,7 @@ function LessonReader({ lessonId, bundle }: { lessonId: number; bundle: ContentB
   const [definition, setDefinition] = useState<GlossaryTerm | null>(null);
 
   const lesson = bundle.lessons.find((l) => l.id === lessonId);
-  const matcher = useMemo(() => makeGlossaryMatcher(bundle.glossary), [bundle]);
+  const matcher = useMemo(() => makeGlossaryMatcher(Array.isArray(bundle.glossary) ? bundle.glossary : []), [bundle.glossary]);
   const openTerm = useCallback((term: GlossaryTerm) => { setDefinition(term); }, []);
   useFocusEffect(useCallback(() => {
     if (!lesson) return; start(lesson.id); setLastRoute(`/learn/lesson/${lesson.id}`); const began = stamp();

@@ -36,7 +36,7 @@ function Assessment({ bundle, assessmentKey, kind }: { bundle: ContentBundle; as
   const next = chapterId === null ? null : nextChapterTarget(bundle, progress, chapterId);
   return <View style={styles.root}>
     <Stack.Screen options={{ title: kind === 'chapter' ? t('learn.chapterQuiz') : t('learn.lessonQuiz') }} />
-    <QuizRunner questionIds={ids} assessmentKey={assessmentKey} onComplete={onComplete} resultAction={next ? { label: flowText.nextChapter, subject: next.title, onPress: () => router.replace(next.route) } : undefined} />
+    <QuizRunner questionIds={ids} assessmentKey={assessmentKey} onComplete={onComplete} showQuestionSource={false} resultAction={next ? { label: flowText.nextChapter, subject: next.title, onPress: () => router.replace(next.route) } : undefined} />
   </View>;
 }
 const styles = StyleSheet.create({ root: { flex: 1 } });

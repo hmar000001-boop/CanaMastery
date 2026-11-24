@@ -22,11 +22,12 @@ interface Props {
   assessmentKey?: string;
   onComplete?: (r: { correct: number; total: number }) => void;
   resultAction?: { label: string; subject: string; onPress: () => void };
+  showQuestionSource?: boolean;
 }
 const stamp = (): number => Date.now();
 const newRun = (): string => assessmentRunId('quiz', stamp(), Math.random().toString(36).slice(2));
 
-export function QuizRunner({ questionIds, assessmentKey, onComplete, resultAction }: Props) {
+export function QuizRunner({ questionIds, assessmentKey, onComplete, resultAction, showQuestionSource = true }: Props) {
   const { t } = useTranslation(); const router = useRouter(); const theme = useTheme(); const bundle = useBundle();
   const reduce = useSettings((s) => s.reduceMotion); const feedMistake = useProgress((s) => s.feedMistake);
   const [ids, setIds] = useState(questionIds); const [seed, setSeed] = useState(stamp);
@@ -83,7 +84,7 @@ export function QuizRunner({ questionIds, assessmentKey, onComplete, resultActio
   return <StudyScreen scrollKey={`question-${seed}-${idx}`} top={<>
     <View style={styles.header}><Text variant='labelLarge'>{t('learn.question', { current: idx + 1, total: presented.length })}</Text><View style={[styles.pill, { backgroundColor: solid.success }]}><Text variant='labelMedium' style={{ color: successColor }}>{`✓ ${t('quiz.scoreSoFar', { count: correctSoFar })}`}</Text></View></View><Bar value={(idx + (revealed ? 1 : 0)) / presented.length} height={10} />
   </>} footer={revealed ? <Button mode='contained' contentStyle={styles.cta} buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary} onPress={next}>{last ? t('studyControls.results') : t('learn.next')}</Button> : <Text variant='bodyMedium' style={{ color: theme.colors.onSurfaceVariant, textAlign: 'center' }}>{t('studyControls.chooseAnswer')}</Text>}>
-    <Animated.View style={{ opacity: fade }}><QuestionCard key={`${seed}-${current.question.id}`} presented={current} selected={pick ?? null} reveal={revealed} onSelect={select} /></Animated.View>
+    <Animated.View style={{ opacity: fade }}><QuestionCard key={`${seed}-${current.question.id}`} presented={current} selected={pick ?? null} reveal={revealed} onSelect={select} showSourceCitation={showQuestionSource} /></Animated.View>
   </StudyScreen>;
 }
 const styles = StyleSheet.create({ center: { alignItems: 'center', gap: 12 }, row: { flexDirection: 'row', gap: 12 }, actions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 }, nextAction: { gap: 6 }, grow: { flex: 1, minWidth: 120 }, header: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 8 }, pill: { borderRadius: 12, paddingHorizontal: 10, paddingVertical: 4 }, strong: { fontWeight: '600' }, cta: { paddingVertical: 6 } });

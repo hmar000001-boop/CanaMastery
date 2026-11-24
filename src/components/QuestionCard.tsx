@@ -37,8 +37,8 @@ function Option({ index, text, state, selected, disabled, onPress, compact = fal
     </Pressable>
   </Animated.View>;
 }
-interface Props { presented: Presented; selected: number | null; reveal: boolean; onSelect: (index: number) => void; showBookmark?: boolean; compact?: boolean; textSize?: number; }
-export function QuestionCard({ presented, selected, reveal, onSelect, showBookmark = true, compact = false, textSize }: Props) {
+interface Props { presented: Presented; selected: number | null; reveal: boolean; onSelect: (index: number) => void; showBookmark?: boolean; showSourceCitation?: boolean; compact?: boolean; textSize?: number; }
+export function QuestionCard({ presented, selected, reveal, onSelect, showBookmark = true, showSourceCitation = true, compact = false, textSize }: Props) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { question, options, correctIndex } = presented;
@@ -56,7 +56,7 @@ export function QuestionCard({ presented, selected, reveal, onSelect, showBookma
     {reveal && selected === correctIndex ? <Text accessibilityLiveRegion='polite' style={[styles.banner, { color: success }]}>{`✓ ${t('quiz.correct')}`}</Text> : null}
     {reveal && selected !== null && selected !== correctIndex ? <Text accessibilityLiveRegion='polite' style={[styles.banner, { color: danger }]}>{`✗ ${t('quiz.incorrect')}`}</Text> : null}
     {reveal && question.explanation ? <View style={[styles.explanation, { backgroundColor: theme.colors.primaryContainer }]}><Text variant='bodyMedium' style={{ color: theme.colors.onPrimaryContainer }}>{`💡 ${question.explanation}`}</Text></View> : null}
-    {reveal && question.source ? <CitationCard source={question.source} /> : null}
+    {reveal && showSourceCitation && question.source ? <CitationCard source={question.source} /> : null}
   </View>;
 }
 const styles = StyleSheet.create({ wrap: { gap: 12 }, questionBox: { borderRadius: 20, borderWidth: 1, padding: 18, gap: 12 }, flatQuestion: { borderWidth: 0, borderRadius: 0, paddingHorizontal: 0, paddingTop: 0, paddingBottom: 8 }, tools: { flexDirection: 'row', justifyContent: 'flex-end' }, question: { fontWeight: '600' }, option: { flexDirection: 'row', alignItems: 'center', gap: 14, padding: 14, borderRadius: 16 }, compactOption: { minHeight: 52, paddingVertical: 12, gap: 12 }, pressed: { opacity: 0.85 }, badge: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center' }, compactBadge: { width: 28, height: 28, borderRadius: 14 }, badgeText: { fontWeight: '700', fontSize: 16 }, text: { flex: 1 }, banner: { fontSize: 18, fontWeight: '700' }, explanation: { borderRadius: 16, padding: 14 } });

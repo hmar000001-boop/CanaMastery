@@ -54,6 +54,22 @@ describe('lesson term matching', () => {
     expect(searchGlossary(malformed, 'anything', 'en')).toEqual([]);
     expect(normalizeSearch(undefined)).toBe('');
   });
+  test('treats a missing glossary collection as an empty glossary', () => {
+    expect(makeGlossaryMatcher(undefined)('Parlement')).toEqual([]);
+    expect(makeGlossaryMatcher(null)('Parlement')).toEqual([]);
+    expect(searchGlossary(undefined, 'Parlement', 'fr')).toEqual([]);
+  });
+  test('normalizes safely when the runtime lacks String.prototype.normalize', () => {
+    const descriptor = Object.getOwnPropertyDescriptor(String.prototype, 'normalize');
+    try {
+      Object.defineProperty(String.prototype, 'normalize', { configurable: true, writable: true, value: undefined });
+      expect(normalizeSearch('  RÉPUBLIQUE  ')).toBe('république');
+      expect(normalizeSearch(undefined)).toBe('');
+    } finally {
+      if (descriptor) Object.defineProperty(String.prototype, 'normalize', descriptor);
+      else Reflect.deleteProperty(String.prototype, 'normalize');
+    }
+  });
   test('supports plain rich text and an empty glossary', () => {
     expect(richSegments('One **two**').map((p) => [p.text, p.bold])).toEqual([['One ', false], ['two', true]]);
     expect(makeGlossaryMatcher([])('Parlement')).toEqual([]);
